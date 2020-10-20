@@ -10,8 +10,11 @@ import {EDESTADDRREQ} from 'constants';
 import { ppid, title } from 'process';
 import JSDOM from 'jsdom';
 import moment from 'moment';
-moment().format();
+import cors from 'cors';
 
+
+
+moment().format();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -32,6 +35,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(express.json());
+app.use(cors());
 //app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, '/../public')));
 
@@ -108,7 +112,8 @@ const user = mongoose.model("user", userSchema);
                 // The home route
 app.route("/")
     .get((req, res) => {
-        res.sendFile(path.resolve(__dirname + '/../index.html'));
+        // res.sendFile(path.resolve(__dirname + '/../index.html'));
+        res.send({message : "Server is working properly"});
     });
 
                 // The signup route
