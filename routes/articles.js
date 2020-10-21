@@ -52,7 +52,7 @@ router.delete("/:articleID", (req, res) => {
     });
 
 
-    router.patch("/:articleID", (req,res) => {
+router.patch("/:articleID", (req,res) => {
         article.updateOne({_id: req.params.articleID} , {$set: req.body} , (err) => {
             if(err){
                 console.log(err);
