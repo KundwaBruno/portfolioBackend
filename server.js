@@ -52,4 +52,4 @@ app.use(express.static(path.join(__dirname, '/../public')));
 //     });
 
 let PORT = process.env.PORT;
-app.listen(PORT || 3000, console.log(`Server is running on port ${PORT}`));
+app.listen(PORT || 3000, console.log(`Server is running on port 3000`));
