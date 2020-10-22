@@ -22,7 +22,7 @@ router.post('/', (req,res) => {
         if (err) {
             console.log(err);
         } else {
-            res.send("Article Added successfully");
+            res.send(newArticle);
         }
     })
 })

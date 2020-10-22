@@ -16,7 +16,7 @@ router.get('/' , (req ,res) => {
 router.post('/' , (req,res) => {
     const newUser = new user({
         firstname: req.body.firstname,
-        secondname: req.body.lastname,
+        secondname: req.body.secondname,
         email: req.body.email,
         password: req.body.password
     });
@@ -25,7 +25,7 @@ router.post('/' , (req,res) => {
         if (err) {
             res.send(err);
         } else {
-            res.send("User created successfully");
+            res.send(newUser);
         }
     });
 })
