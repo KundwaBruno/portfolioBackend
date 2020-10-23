@@ -17,7 +17,7 @@ const options = {
 // });
 
 //Connecting to cloud Database
-mongoose.connect("mongodb+srv://Admin-KundwaBruno:" + dbpass + "@kbmclustor.k8hj9.mongodb.net/portfolioDB",options, (err) => {
+mongoose.connect("mongodb+srv://Admin-KundwaBruno:"+ dbpass +"@kbmclustor.k8hj9.mongodb.net/portfolioDB",options, (err) => {
     if(err){
         console.log(err);
     }else{
