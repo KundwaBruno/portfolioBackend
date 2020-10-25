@@ -1,8 +1,11 @@
 import express from 'express'
 import mongoose from '../database/db.js'
 import article from '../models/articles.js'
+import comments from '../models/comments.js';
+import moment from 'moment'
 const router = express.Router();
 let date = new Date();
+moment().format();
 
 
 // Getting all articles
@@ -19,7 +22,12 @@ router.post('/', (req,res) => {
         title: req.body.title,
         date: date,
         image: req.body.image,
-        description: req.body.description
+        description: req.body.description,
+        comments : [{
+            username : req.body.username,
+            comment : req.body.comment,
+            date : date
+        }]
     });
 
     newArticle.save((err) => {
@@ -70,5 +78,17 @@ router.patch("/:articleID", (req,res) => {
         }
     )}
     );
+
+
+    //Adding a comment
+    router.post("/:articleID/comment" , (req,res) => {
+        article.updateOne({_id: req.params.articleID } , {$push: {comments : {username : "username" , comment : req.body.body , date : date}}} , (err) => {
+            if(err){
+                res.send(err);
+            }else{
+                res.send({message : "Comment Added successfully"});
+            }
+        });
+    })
 
 export default router;
