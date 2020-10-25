@@ -15,8 +15,8 @@ import {dirname} from 'path';
 //Importing routes
 import allArticles from './routes/articles.js'
 import allUsers from './routes/users.js'
+import allComments from './routes/comments.js'
 
-moment().format();
 
 const app = express();
 const upload = multer();
@@ -40,6 +40,7 @@ app.use((req,res,next) => {
 
 app.use('/articles' , allArticles);
 app.use('/users' , allUsers);
+app.use('/comments' , allComments);
 app.use(cors());
 //app.use(express.static('public'));
 
