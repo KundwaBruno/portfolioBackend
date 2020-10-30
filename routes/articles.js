@@ -3,6 +3,9 @@ import mongoose from '../database/db.js'
 import article from '../models/articles.js'
 import comments from '../models/comments.js';
 import moment from 'moment'
+import verify from '../Authentication/tokenAuth.js'
+
+
 const router = express.Router();
 let date = new Date();
 moment().format();
@@ -17,7 +20,7 @@ router.get("/", (req, res) => {
 
 
 // Creating a new article
-router.post('/', (req,res) => {
+router.post('/',(req,res) => {
     const newArticle = new article({
         title: req.body.title,
         date: date,
