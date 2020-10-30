@@ -16,6 +16,8 @@ import {dirname} from 'path';
 import allArticles from './routes/articles.js'
 import allUsers from './routes/users.js'
 import allComments from './routes/comments.js'
+import allMessages from './routes/messages.js'
+import cookieParser from 'cookie-parser';
 
 
 const app = express();
@@ -31,6 +33,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(cookieParser());
 app.use((req,res,next) => {
     res.header('Access-Control-Allow-Origin' , '*');
     res.header('Access-Control-Allow-Methods' , 'GET,PUT,POST,DELETE');
@@ -41,7 +44,15 @@ app.use((req,res,next) => {
 app.use('/articles' , allArticles);
 app.use('/users' , allUsers);
 app.use('/comments' , allComments);
+app.use('/messages', allMessages);
+
 app.use(cors());
+app.use( (req,res,next) => {
+    res.header('Access-control-Allow-Origin' , '*' );
+    res.header('Acess-Control-Allow-Methods' , 'POST , DELETE, PATCH , GET ,PUT');
+    res.header('Access-Control-Allow-Headers' , 'content-Type');
+    next();
+} )
 //app.use(express.static('public'));
 
 
