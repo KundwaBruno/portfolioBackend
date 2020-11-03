@@ -26,11 +26,11 @@ router.post('/',(req,res) => {
         date: date,
         image: req.body.image,
         description: req.body.description,
-        comments : [{
-            username : req.body.username,
-            comment : req.body.comment,
-            date : date
-        }]
+        // comments : [{
+        //     username : req.body.username,
+        //     comment : req.body.comment,
+        //     date : date
+        // }]
     });
 
     newArticle.save((err) => {
@@ -72,7 +72,7 @@ router.delete("/:articleID", (req, res) => {
 
 // Updating an article
 router.patch("/:articleID", (req,res) => {
-        article.updateOne({_id: req.params.articleID} , {$set: req.body} , (err) => {
+        article.findOneAndUpdate({_id: req.params.articleID} , req.body , (err) => {
             if(err){
                 console.log(err);
             }else{
