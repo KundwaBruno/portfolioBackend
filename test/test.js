@@ -18,7 +18,6 @@ describe('REST API', () => {
           .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('array');
-                res.body.length.should.be.eql(1);
             done();
           });
     });
@@ -33,13 +32,29 @@ describe('REST API', () => {
       });
     });
 
+
     //Testing creating an article
+    it('It should save an article in the database with all fields Entered' , (done) => {
+      let article = {
+        title : "testingTitle",
+        description : 'testing lorem ipsum....',
+        image : 'image_Path',
+      }
+      chai.request(server).post('/articles').send(article).end( (err,res) => {
+        res.body.title.should.eql("testingTitle");
+        res.body.description.should.eql("testing lorem ipsum....");
+        res.body.image.should.eql("image_Path");
+        done();
+      });
+    });
+
+
+    //Testing creating a user
     it('It should save a user in the database with all fields Entered' , (done) => {
       let user = {
         firstname : "testing",
         secondname : 'testing',
         email : 'email@gmail.com',
-        password : 'password123'
       }
       chai.request(server).post('/users').send(user).end( (err,res) => {
         res.body.firstname.should.eql("testing");
@@ -78,5 +93,17 @@ describe('REST API', () => {
 
     })
 
+     //Testing Delete route
+  it('Should delete one article' , (done) => {
+    let articleId = '5f9b1f115605d85872fa577f';
+    chai.request(server).delete('/articles/' + articleId).end( (err,res) => {
+      res.body.message.should.eql('Article deleted successfully');
+      done();
+    })
+  });
+
+
 
 });
+
+  

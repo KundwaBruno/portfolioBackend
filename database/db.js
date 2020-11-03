@@ -5,7 +5,8 @@ const dbpass = process.env.DB_password;
 const DB_PORT = process.env.PORT;
 const options = {
     useUnifiedTopology: true,
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useFindAndModify: false
 }
 // // Connection to the local database
 // mongoose.connect('mongodb://localhost:27017/portfolioDB', options, (err) => {
