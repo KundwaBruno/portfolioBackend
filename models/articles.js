@@ -18,7 +18,7 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    comments: {}
+    comments: []
 });
 
 export default mongoose.model("article", articleSchema);
