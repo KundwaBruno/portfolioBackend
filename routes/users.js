@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import firebase from 'firebase';
 
 dotenv.config();
 
@@ -37,7 +38,7 @@ router.post('/' , async (req,res) => {
 
     //Checking if user does exists
     const userExists = await user.findOne({email : req.body.email});
-    if(userExists) return res.status(400).send('User does already exists');
+    if(userExists) return res.status(400).send({message:'User does already exists'});
 
     //Encrypting The password
     const salt = await bcrypt.genSalt(10);
@@ -65,19 +66,26 @@ router.post('/' , async (req,res) => {
 
 router.post('/login' , async (req,res) => {
 
-    //Checking for email availability
-    const userInfo = await user.findOne({email : req.body.email});
-    if(!userInfo) return res.status(400).send({message : 'Invalid Email'});
+    let email = re.body.email;
+    let password = req.body.password;
 
-    //Checking for password availability
-    const pass = await bcrypt.compare(req.body.password , userInfo.password);
-    if(!pass) return res.status(400).send({message : 'Invalid Password'});
-
-    const token = jwt.sign({firstname : userInfo.firstname} , process.env.TOKEN_SECRET );
-
-    res.cookie('auth-token' , token , {httpOnly : true});
-    res.header('auth-token' , token).send({message : "Logged In" , token : token});
+    firebase.auth().signInWithEmailAndPassword( email , password ).catch((err)=>{
+        let errorCode = error.code;
+        res.send(errorCode);
+    });
 
 })
 
 export default router;
+
+//Checking user status route
+
+router.get('/status' , async (req,res)=>{
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            res.send({message : `User ${user.email} is signed in`})
+        } else {
+            res.send({message : 'No user signed in'})
+        }
+    });
+})

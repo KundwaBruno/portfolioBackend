@@ -3,8 +3,6 @@ import mongoose from '../database/db.js'
 import article from '../models/articles.js'
 import comments from '../models/comments.js';
 import moment from 'moment'
-import verify from '../Authentication/tokenAuth.js'
-
 
 const router = express.Router();
 let date = new Date();
@@ -26,11 +24,7 @@ router.post('/',(req,res) => {
         date: date,
         image: req.body.image,
         description: req.body.description,
-        // comments : [{
-        //     username : req.body.username,
-        //     comment : req.body.comment,
-        //     date : date
-        // }]
+        comments : []
     });
 
     newArticle.save((err) => {
@@ -68,6 +62,17 @@ router.delete("/:articleID", (req, res) => {
             }
         })
     });
+
+// Deleting all articles
+router.delete('/' , (req,res)=>{
+    article.deleteMany((err)=>{
+        if(err){
+            res.send(error);
+        }else{
+            res.send('All articles deleted successfully!');
+        }
+    })
+})    
 
 
 // Updating an article
