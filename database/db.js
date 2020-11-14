@@ -1,4 +1,3 @@
-import express from 'express'
 import mongoose from 'mongoose'
 
 const dbpass = process.env.DB_password;
