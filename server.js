@@ -6,7 +6,6 @@ import multer from 'multer';
 import {EDESTADDRREQ} from 'constants';
 import { ppid, title } from 'process';
 import JSDOM from 'jsdom';
-import moment from 'moment';
 import cors from 'cors';
 import path from 'path';
 import {fileURLToPath} from 'url';
@@ -22,7 +21,6 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 const upload = multer();
-let date = new Date();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
