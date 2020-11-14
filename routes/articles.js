@@ -2,12 +2,10 @@ import express from 'express'
 import mongoose from '../database/db.js'
 import article from '../models/articles.js'
 import comments from '../models/comments.js';
-import moment from 'moment'
+import moment from 'moment';
 
 const router = express.Router();
-let date = new Date();
-moment().format();
-
+const today = new Date().toString();
 
 // Getting all articles
 router.get("/", (req, res) => {
@@ -21,9 +19,10 @@ router.get("/", (req, res) => {
 router.post('/',(req,res) => {
     const newArticle = new article({
         title: req.body.title,
-        date: date,
+        date: today,
         image: req.body.image,
         description: req.body.description,
+        likes : [] ,
         comments : []
     });
 
@@ -90,7 +89,7 @@ router.patch("/:articleID", (req,res) => {
 
     //Adding a comment
     router.post("/:articleID/comment" , (req,res) => {
-        article.updateOne({_id: req.params.articleID } , {$push: {comments : {username : "username" , comment : req.body.body , date : date}}} , (err) => {
+        article.updateOne({_id: req.params.articleID } , {$push: {comments : {username : req.body.name , comment : req.body.body , date : today}}} , (err) => {
             if(err){
                 res.send(err);
             }else{
@@ -98,5 +97,45 @@ router.patch("/:articleID", (req,res) => {
             }
         });
     })
+
+   //Adding a like
+   router.post("/:articleID/likes" , async (req,res) => {
+    const userLiked = await article.find({"likes.username" : req.body.username } );
+
+    if(userLiked.length === 0){
+        article.updateOne({_id:req.params.articleID} , { $push : {likes : { username : req.body.username } } } , (err) => {
+            if(err){
+                res.send(err);
+            }
+            res.send({message : "Liked"});
+        })
+    }else{
+        article.updateOne({_id:req.params.articleID} , { $pull : {likes : { username : req.body.username } } } , (err) => {
+            if(err){
+                res.send(err);
+            }
+            res.send({message : "Disliked"});
+        })
+       
+    }
+   });
+   
+
+   //Getting All likes
+   router.get("/:articleID/likes" , (req,res) => {
+       article.findOne({_id : req.params.articleID} , (err,article) => {
+           if(!err) return res.send(article.likes);
+       });
+   });
+
+   //Checking like Availability
+   router.post("/:articleID/likes/status" , async (req,res) => {
+      const userLiked = await article.find({"likes.username" : req.body.username } );
+      if(userLiked.length === 0){
+          res.send({liked : false});
+      }else{
+          res.send({liked : true});
+      }
+   })
 
 export default router;
